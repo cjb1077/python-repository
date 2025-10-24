@@ -12,10 +12,10 @@ COMMANDS TO RUN APP
 
 (with Docker running)
 
-cd ~/your_file_directory
-docker compose up -d
-cd app
-python3 -m venv .venv
+-cd ~/your_file_directory
+#docker compose up -d
+#cd app
+#python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp -n .env.example .env
