@@ -1,7 +1,12 @@
-#################################################################################################################################################
-#########################################################################################################
+#######################################################################################
+
+
+
 
 ![Streamlit App in Python](app_screenshot.png)
+
+
+
 
 This an application in python that can ingest a pdf (postgres), create embeddings, store those in postgres (pgvector), and help retrieve data 
 from that pdf while asking a chatbot questions. The daatbase is in a docker container, and the python runs in a virtual environment. Additionally, 
@@ -9,8 +14,9 @@ SQLALchemy is used to create a connection between the python code and the postgr
 
 Ingest process, chunking technique, and retrieval process currently in construction. All other pieces working and code will run. 
 
-#################################################################################################################################################
-#########################################################################################################
+
+#######################################################################################
+
 
 COMMANDS TO RUN APP
 
@@ -50,6 +56,10 @@ docker exec -it rag_pg psql -U postgres -d ragdb -c "SELECT doc_id, COUNT(*) FRO
 
 ![Commands](commands_example.png)
 
+
+
+
+
 cd ~/your_file_directory
 
 docker compose up -d
@@ -68,7 +78,9 @@ python db.py
 
 streamlit run streamlit_app.py
 
-#########################################################################################################
+
+#######################################################################################
+
 
 to try SQL queries: docker exec -it rag_pg psql -U postgres -d ragdb -c \
 
@@ -89,5 +101,9 @@ chunker is character based, 1200 chars per chunk with 150-char overlap
 we search the chunks table by vector similarity
 
 top-k chunks are shown/used as context for the answer 
+
+
+
+#######################################################################################
 
 #########################################################################################################
