@@ -1,30 +1,30 @@
 import os
 import re
 from pathlib import Path
+from typing import Iterable
+
+
 from dotenv import load_dotenv
 from pypdf import PdfReader
 from openai import OpenAI
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from db import SessionLocal
+
+
+from db import engine, SessionLocal
 from models import Document, Chunk
 
-
-#TESTING
-from sentence_transformers import SentenceTransformer
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-
-### Contains functions read_pdf, chunk_text, embed_texts upsert_document, and ingest_pdf. #### IN PROGRESS ###
 
 load_dotenv()
 EMBED_MODEL = os.getenv("EMBED_MODEL", "text-embedding-3-small")
 OPENAI_KEY = os.getenv("OPENAI_KEY")
+
+
 client = OpenAI(api_key=OPENAI_KEY)
 
-model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
-# function for ingesting pdf
+
+
 def read_pdf(path: Path) -> str:
     reader = PdfReader(str(path))
     texts = []
@@ -32,7 +32,9 @@ def read_pdf(path: Path) -> str:
         texts.append(page.extract_text() or "")
     return "\n".join(texts)
 
-# Chunking
+
+
+
 def chunk_text(text: str, max_chars: int = 1200, overlap: int = 150) -> list[str]:
     text = re.sub(r"\s+", " ", text).strip()
     chunks: list[str] = []
@@ -49,19 +51,16 @@ def chunk_text(text: str, max_chars: int = 1200, overlap: int = 150) -> list[str
     return chunks
 
 
-# connects to emdeddings model and creates the embeddings via batch *OLD*
-def embed_texts(texts: list[str]) -> list[list[float]]:
-    #texts['embedding'] = texts['query'].apply(lambda x: model.encode(x).tolist())
-    embeddings = model.encode(texts)
-    print(embeddings.shape)
-    # Take a look at a sample of the data to make sure
-    similarities = model.similarity(embeddings, embeddings)
-    print(similarities)
-    # OLD
-#     resp = client.embeddings.create(model=EMBED_MODEL, input=texts)
-#     return [d.embedding for d in resp.data]
 
-### IN PROGRESS ###
+
+def embed_texts(texts: list[str]) -> list[list[float]]:
+    # Batches are faster; OpenAI client supports passing a list of inputs
+    resp = client.embeddings.create(model=EMBED_MODEL, input=texts)
+    return [d.embedding for d in resp.data]
+
+
+
+
 def upsert_document(session: Session, uri: str, title: str | None = None) -> Document:
     existing = session.execute(select(Document).where(Document.uri == uri)).scalar_one_or_none()
     if existing:
@@ -70,6 +69,8 @@ def upsert_document(session: Session, uri: str, title: str | None = None) -> Doc
     session.add(doc)
     session.flush()
     return doc
+
+
 
 
 def ingest_pdf(path_str: str) -> None:
@@ -90,6 +91,9 @@ def ingest_pdf(path_str: str) -> None:
             session.add(Chunk(doc_id=doc.id, chunk_index=i, text=t, embedding=e, meta={"source": str(path)}))
         session.commit()
     print(f"Ingested {len(chunks)} chunks from {path.name}")
+
+
+
 
 if __name__ == "__main__":
     import sys
