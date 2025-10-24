@@ -12,14 +12,22 @@ COMMANDS TO RUN APP
 
 (with Docker running)
 
--cd ~/your_file_directory
-#docker compose up -d
-#cd app
-#python3 -m venv .venv
+cd ~/your_file_directory
+
+docker compose up -d
+
+cd app
+
+python3 -m venv .venv
+
 source .venv/bin/activate
+
 pip install -r requirements.txt
+
 cp -n .env.example .env
+
 python db.py
+
 streamlit run streamlit_app.py
 
 #########################################################################################################
@@ -29,7 +37,9 @@ to try SQL queries: docker exec -it rag_pg psql -U postgres -d ragdb -c \
 docker commands for DB
 
 docker exec -it rag_pg psql -U postgres -d ragdb -c "SELECT id, title FROM documents ORDER BY id DESC LIMIT 3;"
+
 docker exec -it rag_pg psql -U postgres -d ragdb -c "SELECT COUNT(*) FROM chunks;"
+
 docker exec -it rag_pg psql -U postgres -d ragdb -c "SELECT doc_id, COUNT(*) FROM chunks GROUP BY doc_id ORDER BY doc_id DESC LIMIT 5;"
 
 
