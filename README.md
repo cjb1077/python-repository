@@ -1,1 +1,1 @@
-Repository for Python practice and projects.
+This an application in python that can ingest a pdf, create embeddings, store those in postgres (pgvector), and help retrieve data from that pdf while asking a chatbot questions. This is a framework to be further tested and build upon to take in .docx, markdown, and other types of data. 
