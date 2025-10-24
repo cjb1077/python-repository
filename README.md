@@ -6,7 +6,7 @@ SQLALchemy is used to create a connection between the python code and the postgr
 
 Ingest process, chunking technique, and retrieval process currently in construction. All other pieces working and code will run. 
 
-
+#########################################################################################################
 
 COMMANDS TO RUN APP
 
@@ -22,8 +22,15 @@ cp -n .env.example .env
 python db.py
 streamlit run streamlit_app.py
 
+#########################################################################################################
 
 to try SQL queries: docker exec -it rag_pg psql -U postgres -d ragdb -c \
+
+docker commands for DB
+
+docker exec -it rag_pg psql -U postgres -d ragdb -c "SELECT id, title FROM documents ORDER BY id DESC LIMIT 3;"
+docker exec -it rag_pg psql -U postgres -d ragdb -c "SELECT COUNT(*) FROM chunks;"
+docker exec -it rag_pg psql -U postgres -d ragdb -c "SELECT doc_id, COUNT(*) FROM chunks GROUP BY doc_id ORDER BY doc_id DESC LIMIT 5;"
 
 
 The pdf was split into chunks, or segments, and each chunk was embedded (one vector per chunk). those rows were inserted into the chunks table in 
@@ -35,10 +42,4 @@ we search the chunks table by vector similarity
 
 top-k chunks are shown/used as context for the answer 
 
-docker commands for DB
-
-docker exec -it rag_pg psql -U postgres -d ragdb -c "SELECT id, title FROM documents ORDER BY id DESC LIMIT 3;"
-docker exec -it rag_pg psql -U postgres -d ragdb -c "SELECT COUNT(*) FROM chunks;"
-docker exec -it rag_pg psql -U postgres -d ragdb -c "SELECT doc_id, COUNT(*) FROM chunks GROUP BY doc_id ORDER BY doc_id DESC LIMIT 5;"
-
-
+#########################################################################################################
