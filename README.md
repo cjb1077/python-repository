@@ -1,10 +1,7 @@
-#######################################################################################
-
 
 
 
 ![Streamlit App in Python](app_screenshot.png)
-
 
 
 
@@ -101,9 +98,5 @@ chunker is character based, 1200 chars per chunk with 150-char overlap
 we search the chunks table by vector similarity
 
 top-k chunks are shown/used as context for the answer 
-
-
-
-#######################################################################################
 
 #########################################################################################################
