@@ -1,4 +1,4 @@
-#################################################################################################################################################
+#################################################################################################
 
 This an application in python that can ingest a pdf (postgres), create embeddings, store those in postgres (pgvector), and help retrieve data 
 from that pdf while asking a chatbot questions. The daatbase is in a docker container, and the python runs in a virtual environment. Additionally, 
@@ -6,7 +6,7 @@ SQLALchemy is used to create a connection between the python code and the postgr
 
 Ingest process, chunking technique, and retrieval process currently in construction. All other pieces working and code will run. 
 
-#################################################################################################################################################
+
 
 COMMANDS TO RUN APP
 
@@ -41,4 +41,4 @@ docker exec -it rag_pg psql -U postgres -d ragdb -c "SELECT id, title FROM docum
 docker exec -it rag_pg psql -U postgres -d ragdb -c "SELECT COUNT(*) FROM chunks;"
 docker exec -it rag_pg psql -U postgres -d ragdb -c "SELECT doc_id, COUNT(*) FROM chunks GROUP BY doc_id ORDER BY doc_id DESC LIMIT 5;"
 
-#################################################################################################################################################
+
